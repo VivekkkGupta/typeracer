@@ -14,9 +14,9 @@ export const TypeRacerContextProvider = ({ children }) => {
     const [inputValue, setInputValue] = useState('')
 
 
-    useEffect(()=>{
-        console.log(inputbox.current.clientWidth)   
-    },[inputValue])
+    // useEffect(() => {
+    //     console.log(inputbox.current.clientWidth)
+    // }, [inputValue])
 
     const gameRestart = () => {
         setTestOver(false);
