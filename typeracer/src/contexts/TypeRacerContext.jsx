@@ -1,17 +1,22 @@
-import React, { createContext, useContext, useState, useRef } from "react";
+import React, { createContext, useContext, useState, useRef, useEffect } from "react";
 import { generate } from "random-words";
 
 const TypeRacerContext = createContext();
 
 export const TypeRacerContextProvider = ({ children }) => {
     const [wordsArray, setWordsArray] = useState(generate(100));
-    const [timer, setTimer] = useState(5);
+    const [timer, setTimer] = useState(60);
     const [isTyping, setIsTyping] = useState(false);
     const [testOver, setTestOver] = useState(false);
     const inputbox = useRef(null);
     const eachcharacterref = useRef(null);
     const [currChar, setCurrChar] = useState("")
     const [inputValue, setInputValue] = useState('')
+
+
+    useEffect(()=>{
+        console.log(inputbox.current.clientWidth)   
+    },[inputValue])
 
     const gameRestart = () => {
         setTestOver(false);

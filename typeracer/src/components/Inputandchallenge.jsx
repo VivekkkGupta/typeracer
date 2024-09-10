@@ -22,7 +22,7 @@ function Inputandchallenge() {
 
                                     ))
                                 }
-                                {console.log(eachcharacterref.getBoundingClientRect())}
+                                
                                 <span key={`space-${wordindex}`}> </span>
                             </span>
                         ))}
@@ -36,10 +36,11 @@ function Inputandchallenge() {
                         type="text"
                         placeholder="Type Here"
                         value={inputValue}
-                        className={`w-[50%] 
-                        left-[50%]
+                        className={`w-full pl-[50%]
+                            
                         h-full placeholder:text-gray-400 bg-black focus:outline-0 outline-0`}
                     />
+                    
                 </div>
 
             </div>

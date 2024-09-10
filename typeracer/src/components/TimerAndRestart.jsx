@@ -11,7 +11,7 @@ function TimerAndRestart() {
                     <span
                         className="text-gray-400 cursor-pointer"
                         onClick={() =>
-                            setTimer((prevtimer) => (prevtimer > 0 ? prevtimer - 1 : prevtimer))
+                            setTimer((prevtimer) => (prevtimer > 0 ? prevtimer - 15 : prevtimer))
                         }
                     >
                         <i className="ri-subtract-line"></i>
@@ -23,7 +23,7 @@ function TimerAndRestart() {
                 {!isTyping && (
                     <span
                         className="text-gray-400 cursor-pointer"
-                        onClick={() => setTimer((prevtimer) => prevtimer + 1)}
+                        onClick={() => setTimer((prevtimer) => prevtimer + 15)}
                     >
                         <i className="ri-add-line"></i>
                     </span>
