@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useTypeRacerContext } from "../contexts/TypeRacerContext"
 
 function Inputandchallenge() {
@@ -7,46 +7,68 @@ function Inputandchallenge() {
     const [wrongWordsCount, setWrongWordsCount] = useState(0)
     const [wrongCharactersCount, setWrongCharactersCount] = useState(0)
 
+    const wordRef = useRef(null)
+
     const [InputValueArray, setInputValueArray] = useState([])
+    const [InputValueString, setInputValueString] = useState("")
 
     const handleInput = (e) => {
-        let InputValues = e.target.value
+        //saving string in a variable
+        let inputString = e.target.value
 
-        setInputValueArray(InputValues.split(" "))
-        // if (InputValues.split("")[InputValues.length - 1] === " ") {
-        // }
+        // if space is found then consider as word is completed or ignore it if it is first character
+        if (inputString.endsWith(" ") || inputString === " ") {
 
-        setInputValue(e.target.value)
-    }
-
-    const checkCorrectOrNot = () => {
-        for (let i = 0; i < wordsArray.length; i++) {
-            // console.log(wordsArray[i], i)
-            // console.log(InputValueArray[i], i)
-            if (InputValueArray.length >= 1) {
-
-                for (let j = 0; j < wordsArray[i].length; j++) {
-
-                    if (wordsArray[i][j] === InputValueArray[i].split("")[j]) {
-                        console.log("right typed")
-                    }
-                    else {
-                        console.log("wrong typed")
-                    }
-                }
-                // if (wordsArray[i] === InputValueArray[i]) {
-                //     console.log("first word correct")
-                // }
-                // else {
-                //     console.log("first word wrong")
-                // }
+            //if last character is space this means word is completed and should be saved in array
+            if (inputString.length>1) {
+                setInputValueArray((prevArray) => [
+                    ...prevArray,
+                    inputValue.trim()
+                ]);
             }
+            inputString = ""
+            setInputValue("")
+        }
+        else{
+            // For Showing on Inputbox
+            setInputValue(inputString)
         }
     }
 
-    useEffect(() => {
-        checkCorrectOrNot();
-    }, [inputValue])
+    useEffect(()=>{
+        //get the currect character of the words from word array
+        let CurrentCharacterOfWordsArray = wordsArray[InputValueArray.length][inputValue.length-1]
+        //get the currect character of the input word
+        let CurrentTypedCharacter = inputValue.slice(-1)
+        
+        if (CurrentCharacterOfWordsArray !== undefined){
+
+            if (CurrentCharacterOfWordsArray === CurrentTypedCharacter){
+                console.log("Correctly typed",CurrentCharacterOfWordsArray,CurrentTypedCharacter)
+                console.log(inputbox.current.style.color="white")
+            }
+            else{
+                console.log(inputbox.current.style.color="red")
+                console.log("InCorrectly typed",CurrentCharacterOfWordsArray,CurrentTypedCharacter)
+            }
+        }
+        else{
+            let WordfromWordsArray = wordsArray[InputValueArray.length-1]
+            let WordfromInputArray = InputValueArray[InputValueArray.length-1]
+            
+            if (WordfromWordsArray === WordfromInputArray){
+                console.log("Word Typed Correctly")
+
+            }
+            else{
+                console.log("Word Typed InCorrectly")
+                
+            }
+        }
+
+    },[inputValue])
+
+
     return (
         <>
             <div className="flex flex-col gap-5 ">
@@ -57,7 +79,7 @@ function Inputandchallenge() {
                         `}>
 
                         {wordsArray.map((word, wordindex) => (
-                            <span key={wordindex}>
+                            <span key={wordindex} ref={wordRef}>
                                 {
                                     word.split("").map((char, charindex) => (
                                         <span ref={eachcharacterref} key={charindex}>
