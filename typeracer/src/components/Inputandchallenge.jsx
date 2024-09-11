@@ -25,47 +25,91 @@ function Inputandchallenge() {
                     ...prevArray,
                     inputValue.trim()
                 ]);
+
+                // after Space is pressed the word will be submitted and checked
+                CheckWordIsCorrectOrNot();
             }
+
+            
+
+            //Reset the input Box
             inputString = ""
             setInputValue("")
+
+            //Change the input cursor to white
+            ChangeColorToWhite(inputbox)
         }
         else{
             // For Showing on Inputbox
             setInputValue(inputString)
+            
         }
     }
 
-    useEffect(()=>{
+    const CheckWordIsCorrectOrNot=()=> {
+        let CurrentWordfromWordsArray = wordsArray[InputValueArray.length-1]
+        let CurrentWordfromInputArray = InputValueArray[InputValueArray.length-1]
+
+        console.log(CurrentWordfromWordsArray)
+        console.log(CurrentWordfromInputArray)
+        
+        // if (CurrentWordfromWordsArray === CurrentWordfromInputArray){
+        //     console.log("Word Typed Correctly",CurrentWordfromWordsArray)
+        // }
+        // else{
+        //     console.log("Word Typed InCorrectly",CurrentWordfromWordsArray,CurrentWordfromInputArray)
+        // }
+    }
+
+    const CheckCharacterCorrectOrNot = () =>{
+
         //get the currect character of the words from word array
-        let CurrentCharacterOfWordsArray = wordsArray[InputValueArray.length][inputValue.length-1]
+        let currentWord = wordsArray[InputValueArray.length];
+        let CurrentCharacterOfWordsArray = currentWord ? currentWord[inputValue.length-1] : undefined;
+
         //get the currect character of the input word
         let CurrentTypedCharacter = inputValue.slice(-1)
-        
-        if (CurrentCharacterOfWordsArray !== undefined){
 
-            if (CurrentCharacterOfWordsArray === CurrentTypedCharacter){
-                console.log("Correctly typed",CurrentCharacterOfWordsArray,CurrentTypedCharacter)
-                console.log(inputbox.current.style.color="white")
-            }
-            else{
-                console.log(inputbox.current.style.color="red")
-                console.log("InCorrectly typed",CurrentCharacterOfWordsArray,CurrentTypedCharacter)
-            }
-        }
-        else{
-            let WordfromWordsArray = wordsArray[InputValueArray.length-1]
-            let WordfromInputArray = InputValueArray[InputValueArray.length-1]
-            
-            if (WordfromWordsArray === WordfromInputArray){
-                console.log("Word Typed Correctly")
+        //Current character of wordarray should not be undefined
+        console.log(CurrentCharacterOfWordsArray)
+        console.log(CurrentTypedCharacter)
+        // if (CurrentCharacterOfWordsArray !== undefined){
 
-            }
-            else{
-                console.log("Word Typed InCorrectly")
-                
-            }
-        }
+        //     //If both the characters are same then character entered is correct
+        //     if (CurrentCharacterOfWordsArray === CurrentTypedCharacter){
+        //         ChangeColorToWhite(inputbox)
+        //         console.log("ifblock")
+        //     }
+        //     else{
+        //         ChangeColorToRed(inputbox)
+        //         console.log("elseblock")
+        //     }
+        // }
 
+        // //If trying to access more character from word array 
+        // else{
+        //     ChangeColorToRed(inputbox)
+        // }
+    }
+
+    const IncreaseWrongCharacterCount = () =>{
+        setWrongCharactersCount((prevCount)=> prevCount+1)
+    }
+
+    const IncreaseWrongWordCount = () =>{
+        setWrongWordsCount((prevCount)=> prevCount+1)
+    }
+
+    const ChangeColorToRed = (EleRef) =>{
+        EleRef.current.style.color="red"
+    }
+
+    const ChangeColorToWhite = (EleRef) =>{
+        EleRef.current.style.color="white"
+    }
+
+    useEffect(()=>{
+        CheckCharacterCorrectOrNot()
     },[inputValue])
 
 
