@@ -6,11 +6,15 @@ function Inputandchallenge() {
 
     const [wrongWordsCount, setWrongWordsCount] = useState(0)
     const [wrongCharactersCount, setWrongCharactersCount] = useState(0)
+    
+    const [totalCharacterTyped, setTotalCharacterTyped] = useState(0)
+    const [totalWordTyped, setTotalWordTyped] = useState(0)
 
-    const wordRef = useRef(null)
+    const wordRefs = useRef([])
+    const textMeasureRef = useRef(null)
+    const ChallengeRef = useRef(null)
 
     const [InputValueArray, setInputValueArray] = useState([])
-    const [InputValueString, setInputValueString] = useState("")
 
     const handleInput = (e) => {
         //saving string in a variable
@@ -26,8 +30,6 @@ function Inputandchallenge() {
                     inputValue.trim()
                 ]);
 
-                // after Space is pressed the word will be submitted and checked
-                CheckWordIsCorrectOrNot();
             }
 
             
@@ -49,47 +51,43 @@ function Inputandchallenge() {
     const CheckWordIsCorrectOrNot=()=> {
         let CurrentWordfromWordsArray = wordsArray[InputValueArray.length-1]
         let CurrentWordfromInputArray = InputValueArray[InputValueArray.length-1]
+        const currentIndex = InputValueArray.length - 1;
 
-        console.log(CurrentWordfromWordsArray)
-        console.log(CurrentWordfromInputArray)
-        
-        // if (CurrentWordfromWordsArray === CurrentWordfromInputArray){
-        //     console.log("Word Typed Correctly",CurrentWordfromWordsArray)
-        // }
-        // else{
-        //     console.log("Word Typed InCorrectly",CurrentWordfromWordsArray,CurrentWordfromInputArray)
-        // }
+        if (wordRefs.current[currentIndex] !== undefined){
+
+            if (CurrentWordfromWordsArray === CurrentWordfromInputArray){
+                ChangeColorToWhite(wordRefs,currentIndex)
+            }
+            else{
+                ChangeColorToRed(wordRefs,currentIndex)
+            }
+        }
     }
 
     const CheckCharacterCorrectOrNot = () =>{
 
         //get the currect character of the words from word array
         let currentWord = wordsArray[InputValueArray.length];
-        let CurrentCharacterOfWordsArray = currentWord ? currentWord[inputValue.length-1] : undefined;
+        let isCorrect = true;
+        
+        // Check each character up to the current input length
+        for (let i = 0; i < inputValue.length; i++) {
+            let currentCharacterOfWordsArray = currentWord ? currentWord[i] : undefined;
+            let currentTypedCharacter = inputValue[i];
 
-        //get the currect character of the input word
-        let CurrentTypedCharacter = inputValue.slice(-1)
+            // If any character does not match, set isCorrect to false
+            if (currentCharacterOfWordsArray !== currentTypedCharacter) {
+                isCorrect = false;
+                break;
+            }
+        }
 
-        //Current character of wordarray should not be undefined
-        console.log(CurrentCharacterOfWordsArray)
-        console.log(CurrentTypedCharacter)
-        // if (CurrentCharacterOfWordsArray !== undefined){
-
-        //     //If both the characters are same then character entered is correct
-        //     if (CurrentCharacterOfWordsArray === CurrentTypedCharacter){
-        //         ChangeColorToWhite(inputbox)
-        //         console.log("ifblock")
-        //     }
-        //     else{
-        //         ChangeColorToRed(inputbox)
-        //         console.log("elseblock")
-        //     }
-        // }
-
-        // //If trying to access more character from word array 
-        // else{
-        //     ChangeColorToRed(inputbox)
-        // }
+        // Change the color on basis of isCorrect
+        if (isCorrect) {
+            ChangeColorToWhite(inputbox);
+        } else {
+            ChangeColorToRed(inputbox);
+        }
     }
 
     const IncreaseWrongCharacterCount = () =>{
@@ -100,17 +98,37 @@ function Inputandchallenge() {
         setWrongWordsCount((prevCount)=> prevCount+1)
     }
 
-    const ChangeColorToRed = (EleRef) =>{
-        EleRef.current.style.color="red"
+    const ChangeColorToRed = (EleRef,index="") =>{
+        if (index !==""){
+            EleRef.current[index].style.color="red"
+        }
+        else{
+            EleRef.current.style.color="red"
+        }
     }
 
-    const ChangeColorToWhite = (EleRef) =>{
-        EleRef.current.style.color="white"
+    const ChangeColorToWhite = (EleRef,index="") =>{
+        if (index !==""){
+            EleRef.current[index].style.color="white"
+        }
+        else{
+            EleRef.current.style.color="white"
+        }
     }
 
     useEffect(()=>{
         CheckCharacterCorrectOrNot()
+        if (textMeasureRef.current) {
+            const textWidth = textMeasureRef.current.offsetWidth;
+            ChallengeRef.current.style.left= `calc(50% - ${textWidth}px)`
+        }
+
     },[inputValue])
+
+    useEffect(()=>{
+        // after Space is pressed the word will be submitted and checked
+        CheckWordIsCorrectOrNot();
+    },[InputValueArray])
 
 
     return (
@@ -118,12 +136,13 @@ function Inputandchallenge() {
             <div className="flex flex-col gap-5 ">
 
                 <div className="challenge text-left whitespace-nowrap w-full h-[8vh] relative">
-                    <div className={`absolute
-                        left-[50%]    
+                    <div 
+                    ref={ChallengeRef}
+                    className={`absolute  
                         `}>
 
                         {wordsArray.map((word, wordindex) => (
-                            <span key={wordindex} ref={wordRef}>
+                            <span key={wordindex} ref={el => wordRefs.current[wordindex] = el}>
                                 {
                                     word.split("").map((char, charindex) => (
                                         <span ref={eachcharacterref} key={charindex}>
@@ -138,17 +157,22 @@ function Inputandchallenge() {
                     </div>
                 </div>
 
-                <div className="flex justify-end">
+                <div className="flex justify-end relative">
                     <input
                         ref={inputbox}
                         onChange={(e) => handleInput(e)}
                         type="text"
                         placeholder="Type Here"
                         value={inputValue}
-                        className={`w-full pl-[calc(50%)]
-                        h-full placeholder:text-gray-400 bg-black focus:outline-0 outline-0`}
+                        className={`w-full pl-[calc(50%)] 
+                        h-full placeholder:text-gray-400 bg-black focus:outline-0 outline-0
+                        before:content-["hello"] before:absolute 
+                        `}
                     />
-
+                <span ref={textMeasureRef}
+                    className="absolute invisible"
+                    style={{ font: 'inherit' }}> {inputValue}
+                </span>
                 </div>
 
             </div>
