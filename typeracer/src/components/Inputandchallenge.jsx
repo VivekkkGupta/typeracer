@@ -10,6 +10,10 @@ function Inputandchallenge() {
     const [totalCharacterTyped, setTotalCharacterTyped] = useState(0)
     const [totalWordTyped, setTotalWordTyped] = useState(0)
 
+    const [challengeWidth, setChallengeWidth] = useState(0)
+    const [inputWidth, setInputWidth] = useState(0)
+    const [textWidth, setTextWidth] = useState(0)
+
     const wordRefs = useRef([])
     const textMeasureRef = useRef(null)
     const ChallengeRef = useRef(null)
@@ -22,7 +26,7 @@ function Inputandchallenge() {
 
         // if space is found then consider as word is completed or ignore it if it is first character
         if (inputString.endsWith(" ") || inputString === " ") {
-
+            
             //if last character is space this means word is completed and should be saved in array
             if (inputString.length>1) {
                 setInputValueArray((prevArray) => [
@@ -32,14 +36,13 @@ function Inputandchallenge() {
 
             }
 
-            
-
             //Reset the input Box
             inputString = ""
             setInputValue("")
 
             //Change the input cursor to white
             ChangeColorToWhite(inputbox)
+            setInputWidth(0)
         }
         else{
             // For Showing on Inputbox
@@ -85,6 +88,10 @@ function Inputandchallenge() {
         // Change the color on basis of isCorrect
         if (isCorrect) {
             ChangeColorToWhite(inputbox);
+            if (textMeasureRef.current) {
+                const textWidth = textMeasureRef.current.offsetWidth;
+                setTextWidth((prevWidth)=>Math.abs(prevWidth-textWidth))
+            }    
         } else {
             ChangeColorToRed(inputbox);
         }
@@ -116,13 +123,18 @@ function Inputandchallenge() {
         }
     }
 
+    const increaseChallengeWidth = (size) =>{
+        setChallengeWidth((prevSize)=> prevSize + (size-prevSize))
+        console.log(challengeWidth," ChallengeWidth")
+    }
+
+    const increaseInputWidth = (size) =>{
+        setInputWidth(size)
+        console.log(inputWidth," InputWidth")
+    }
+
     useEffect(()=>{
         CheckCharacterCorrectOrNot()
-        if (textMeasureRef.current) {
-            const textWidth = textMeasureRef.current.offsetWidth;
-            ChallengeRef.current.style.left= `calc(50% - ${textWidth}px)`
-        }
-
     },[inputValue])
 
     useEffect(()=>{
@@ -130,6 +142,19 @@ function Inputandchallenge() {
         CheckWordIsCorrectOrNot();
     },[InputValueArray])
 
+    useEffect(()=>{
+        setChallengeWidth((prevWidth)=> prevWidth + textWidth);
+        setInputWidth(textWidth);
+    },[textWidth])
+
+    useEffect(()=>{
+        if (ChallengeRef.current) {
+            ChallengeRef.current.style.left = `calc(50% - ${challengeWidth}px)`;
+        }
+        if (inputbox.current) {
+            inputbox.current.style.paddingLeft = `calc(50% - ${inputWidth}px)`;
+        }
+    },[inputWidth])
 
     return (
         <>
@@ -138,7 +163,7 @@ function Inputandchallenge() {
                 <div className="challenge text-left whitespace-nowrap w-full h-[8vh] relative">
                     <div 
                     ref={ChallengeRef}
-                    className={`absolute  
+                    className={`absolute 
                         `}>
 
                         {wordsArray.map((word, wordindex) => (
@@ -164,14 +189,15 @@ function Inputandchallenge() {
                         type="text"
                         placeholder="Type Here"
                         value={inputValue}
-                        className={`w-full pl-[calc(50%)] 
+                        className={`w-full
                         h-full placeholder:text-gray-400 bg-black focus:outline-0 outline-0
                         before:content-["hello"] before:absolute 
                         `}
                     />
                 <span ref={textMeasureRef}
                     className="absolute invisible"
-                    style={{ font: 'inherit' }}> {inputValue}
+                    style={{ font: 'inherit' }}> 
+                    {inputValue}
                 </span>
                 </div>
 
