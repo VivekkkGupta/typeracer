@@ -6,13 +6,16 @@ function Inputandchallenge() {
 
     const [wrongWordsCount, setWrongWordsCount] = useState(0)
     const [wrongCharactersCount, setWrongCharactersCount] = useState(0)
-    
+
     const [totalCharacterTyped, setTotalCharacterTyped] = useState(0)
     const [totalWordTyped, setTotalWordTyped] = useState(0)
 
     const [challengeWidth, setChallengeWidth] = useState(0)
     const [inputWidth, setInputWidth] = useState(0)
+
     const [textWidth, setTextWidth] = useState(0)
+    const [prevTextWidth, setPrevTextWidth] = useState(0)
+    const [differenceTextWidth, setDifferenceTextWidth] = useState(0)
 
     const wordRefs = useRef([])
     const textMeasureRef = useRef(null)
@@ -24,55 +27,62 @@ function Inputandchallenge() {
         //saving string in a variable
         let inputString = e.target.value
 
-        // if space is found then consider as word is completed or ignore it if it is first character
+        // if space is found then consider word is completed or ignore it if it is first character
         if (inputString.endsWith(" ") || inputString === " ") {
-            
+
             //if last character is space this means word is completed and should be saved in array
-            if (inputString.length>1) {
+            if (inputString.length > 1) {
                 setInputValueArray((prevArray) => [
                     ...prevArray,
                     inputValue.trim()
                 ]);
 
+                if (textMeasureRef.current) {
+                    textMeasureRef.current.textContent = "\u00A0"
+                    const currentTextWidth = textMeasureRef.current.offsetWidth;
+                    // Add the space width to the challenge width
+                    setChallengeWidth((prevCWidth) => prevCWidth + currentTextWidth);
+                }
             }
-
-            //Reset the input Box
             inputString = ""
             setInputValue("")
-
-            //Change the input cursor to white
-            ChangeColorToWhite(inputbox)
             setInputWidth(0)
+
+            // simple space will reset the input
         }
-        else{
+        else {
             // For Showing on Inputbox
             setInputValue(inputString)
-            
+
+            if (textMeasureRef.current) {
+                const currentTextWidth = textMeasureRef.current.offsetWidth;
+                setPrevTextWidth(currentTextWidth);
+            }
         }
     }
 
-    const CheckWordIsCorrectOrNot=()=> {
-        let CurrentWordfromWordsArray = wordsArray[InputValueArray.length-1]
-        let CurrentWordfromInputArray = InputValueArray[InputValueArray.length-1]
+    const CheckWordIsCorrectOrNot = () => {
+        const CurrentWordfromWordsArray = wordsArray[InputValueArray.length - 1]
+        const CurrentWordfromInputArray = InputValueArray[InputValueArray.length - 1]
         const currentIndex = InputValueArray.length - 1;
 
-        if (wordRefs.current[currentIndex] !== undefined){
+        if (wordRefs.current[currentIndex] !== undefined) {
 
-            if (CurrentWordfromWordsArray === CurrentWordfromInputArray){
-                ChangeColorToWhite(wordRefs,currentIndex)
+            if (CurrentWordfromWordsArray === CurrentWordfromInputArray) {
+                ChangeColorToWhite(wordRefs, currentIndex)
             }
-            else{
-                ChangeColorToRed(wordRefs,currentIndex)
+            else {
+                ChangeColorToRed(wordRefs, currentIndex)
             }
         }
     }
 
-    const CheckCharacterCorrectOrNot = () =>{
+    const CheckCharacterCorrectOrNot = () => {
 
         //get the currect character of the words from word array
         let currentWord = wordsArray[InputValueArray.length];
         let isCorrect = true;
-        
+
         // Check each character up to the current input length
         for (let i = 0; i < inputValue.length; i++) {
             let currentCharacterOfWordsArray = currentWord ? currentWord[i] : undefined;
@@ -88,82 +98,88 @@ function Inputandchallenge() {
         // Change the color on basis of isCorrect
         if (isCorrect) {
             ChangeColorToWhite(inputbox);
+
+            // Measure text width for dynamic adjustment when correct
             if (textMeasureRef.current) {
-                const textWidth = textMeasureRef.current.offsetWidth;
-                setTextWidth((prevWidth)=>Math.abs(prevWidth-textWidth))
-            }    
+                const textwidth = textMeasureRef.current.offsetWidth;
+                setTextWidth(textwidth)
+            }
         } else {
             ChangeColorToRed(inputbox);
         }
     }
 
-    const IncreaseWrongCharacterCount = () =>{
-        setWrongCharactersCount((prevCount)=> prevCount+1)
+    const IncreaseWrongCharacterCount = () => {
+        setWrongCharactersCount((prevCount) => prevCount + 1)
     }
 
-    const IncreaseWrongWordCount = () =>{
-        setWrongWordsCount((prevCount)=> prevCount+1)
+    const IncreaseWrongWordCount = () => {
+        setWrongWordsCount((prevCount) => prevCount + 1)
     }
 
-    const ChangeColorToRed = (EleRef,index="") =>{
-        if (index !==""){
-            EleRef.current[index].style.color="red"
+    const ChangeColorToRed = (EleRef, index = "") => {
+        if (index !== "") {
+            EleRef.current[index].style.color = "red"
         }
-        else{
-            EleRef.current.style.color="red"
-        }
-    }
-
-    const ChangeColorToWhite = (EleRef,index="") =>{
-        if (index !==""){
-            EleRef.current[index].style.color="white"
-        }
-        else{
-            EleRef.current.style.color="white"
+        else {
+            EleRef.current.style.color = "red"
         }
     }
 
-    const increaseChallengeWidth = (size) =>{
-        setChallengeWidth((prevSize)=> prevSize + (size-prevSize))
-        console.log(challengeWidth," ChallengeWidth")
+    const ChangeColorToWhite = (EleRef, index = "") => {
+        if (index !== "") {
+            EleRef.current[index].style.color = "white"
+        }
+        else {
+            EleRef.current.style.color = "white"
+        }
     }
 
-    const increaseInputWidth = (size) =>{
-        setInputWidth(size)
-        console.log(inputWidth," InputWidth")
-    }
 
-    useEffect(()=>{
+    useEffect(() => {
         CheckCharacterCorrectOrNot()
-    },[inputValue])
+    }, [inputValue])
 
-    useEffect(()=>{
+
+    useEffect(() => {
         // after Space is pressed the word will be submitted and checked
         CheckWordIsCorrectOrNot();
-    },[InputValueArray])
+    }, [InputValueArray])
 
-    useEffect(()=>{
-        setChallengeWidth((prevWidth)=> prevWidth + textWidth);
-        setInputWidth(textWidth);
-    },[textWidth])
+    useEffect(() => {
+        const difference = textWidth - prevTextWidth;
+        setDifferenceTextWidth(difference);
+        console.log("last text width : ", difference)
+    }, [textWidth]);
 
-    useEffect(()=>{
-        if (ChallengeRef.current) {
-            ChallengeRef.current.style.left = `calc(50% - ${challengeWidth}px)`;
-        }
-        if (inputbox.current) {
-            inputbox.current.style.paddingLeft = `calc(50% - ${inputWidth}px)`;
-        }
-    },[inputWidth])
+    useEffect(() => {
+        console.log("ChallengeWidth : ", challengeWidth)
+    }, [challengeWidth])
+
+    useEffect(() => {
+        setChallengeWidth((prevCWidth) => (prevCWidth + differenceTextWidth));
+    }, [differenceTextWidth])
+
+    // useEffect(() => {
+    //     if (ChallengeRef.current) {
+    //         ChallengeRef.current.style.left = `calc(50% - ${challengeWidth}px)`;
+    //     }
+    //     if (inputbox.current) {
+    //         inputbox.current.style.paddingLeft = `calc(50% - ${inputWidth}px)`;
+    //     }
+    //     console.log("textwidth : ", textWidth, " prevTextWidth : ", prevTextWidth, " differenceTextWidth : ", differenceTextWidth, "Challenge : ", challengeWidth)
+    // }, [challengeWidth])
+
+
 
     return (
         <>
             <div className="flex flex-col gap-5 ">
 
                 <div className="challenge text-left whitespace-nowrap w-full h-[8vh] relative">
-                    <div 
-                    ref={ChallengeRef}
-                    className={`absolute 
+                    <div
+                        ref={ChallengeRef}
+                        className={`absolute 
                         `}>
 
                         {wordsArray.map((word, wordindex) => (
@@ -190,15 +206,15 @@ function Inputandchallenge() {
                         placeholder="Type Here"
                         value={inputValue}
                         className={`w-full
-                        h-full placeholder:text-gray-400 bg-black focus:outline-0 outline-0
+                        h-full placeholder:text-gray-500 bg-black focus:outline-0 outline-0
                         before:content-["hello"] before:absolute 
                         `}
                     />
-                <span ref={textMeasureRef}
-                    className="absolute invisible"
-                    style={{ font: 'inherit' }}> 
-                    {inputValue}
-                </span>
+                    <span ref={textMeasureRef}
+                        className="absolute invisible"
+                        style={{ font: 'inherit' }}>
+                        {inputValue}
+                    </span>
                 </div>
 
             </div>
