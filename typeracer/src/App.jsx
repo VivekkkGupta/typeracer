@@ -32,7 +32,7 @@ const App = () => {
   }, [isTyping, testOver, setTimer, setTestOver, setIsTyping]);
 
   return (
-    <div className="bg-black w-full h-screen text-white relative flex flex-col justify-around text-5xl overflow-hidden">
+    <div className="bg-black w-full h-screen text-white relative flex flex-col justify-around text-5xl overflow-hidden font-Roboto">
       {/* <Navbar /> */}
 
       <div className="flex flex-col gap-5 h-[20vh] w-full">
