@@ -88,7 +88,7 @@ export const TypeRacerContextProvider = ({ children }) => {
     // Calculate Word Accuracy
     const calculateWordAccuracy = () => {
         if (totalWordTyped > 0) {
-            console.log(correctWordsCount, " / ", totalWordTyped, " = ", (correctWordsCount / totalWordTyped))
+            // console.log(correctWordsCount, " / ", totalWordTyped, " = ", (correctWordsCount / totalWordTyped))
             return ((correctWordsCount / totalWordTyped) * 100).toFixed(2)
         }
         return 0
