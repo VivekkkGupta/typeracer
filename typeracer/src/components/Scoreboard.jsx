@@ -11,7 +11,7 @@ function Scoreboard() {
 
     // for time elapsed
     useEffect(() => {
-        if (gameStartState && !gameOver) {
+        if (!gameStartState && !gameOver) {
             const interval = setInterval(() => {
                 setElapsedTime(prev => prev + 1);
             }, 1000);

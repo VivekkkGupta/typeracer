@@ -22,7 +22,9 @@ function Inputandchallenge() {
 
 
     useEffect(() => {
-        CheckCharacterCorrectOrNot()
+        if (!gameStartState) {
+            CheckCharacterCorrectOrNot()
+        }
     }, [inputValue])
 
     useEffect(() => {
@@ -60,10 +62,10 @@ function Inputandchallenge() {
 
                         {wordsArray.map((word, wordindex) => (
                             <>
-                                <span key={wordindex} ref={el => wordRefs.current[wordindex] = el}>
+                                <span key={`word-${wordindex}`} ref={el => wordRefs.current[wordindex] = el}>
                                     {
                                         word.split("").map((char, charindex) => (
-                                            <span ref={eachcharacterref} key={charindex}>
+                                            <span ref={eachcharacterref} key={`char-${wordindex}-${charindex}`}>
                                                 {char}
                                             </span>
                                         ))

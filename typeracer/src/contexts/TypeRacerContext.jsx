@@ -48,7 +48,16 @@ export const TypeRacerContextProvider = ({ children }) => {
         setTotalCharacterTyped(0);
         setTotalWordTyped(0);
         setElapsedTime(0);
-        setGameStartState(false);
+
+        setChallengeWidth(0)
+        setCurrentWordOffset(0)
+        setInputValueArray([])
+
+        setGameStartState(true);
+        setGameOver(false)
+        setGameStarted(false)
+
+        setWordsArray(generate(100))
         inputbox.current.focus();
     };
 
@@ -60,21 +69,29 @@ export const TypeRacerContextProvider = ({ children }) => {
 
     // Calculate WPM (Words Per Minute)
     const calculateWPM = () => {
-        return (correctWordsCount / (elapsedTime / 60)).toFixed(2);
+        if (elapsedTime > 0) {
+            const minutes = elapsedTime / 60;
+            const totalCharactersTyped = correctCharactersCount;
+            return Math.floor(totalCharactersTyped / (5 * minutes));
+        }
+        return 0;
     };
 
     // Calculate Character Accuracy
     const calculateCharacterAccuracy = () => {
-        return totalCharacterTyped > 0
-            ? ((correctCharactersCount / totalCharacterTyped) * 100).toFixed(2)
-            : 0;
+        if (totalCharacterTyped > 0) {
+            return ((correctCharactersCount / totalCharacterTyped) * 100).toFixed(2)
+        }
+        return 0
     };
 
     // Calculate Word Accuracy
     const calculateWordAccuracy = () => {
-        return totalWordTyped > 0
-            ? ((correctWordsCount / totalWordTyped) * 100).toFixed(2)
-            : 0;
+        if (totalWordTyped > 0) {
+            console.log(correctWordsCount, " / ", totalWordTyped, " = ", (correctWordsCount / totalWordTyped))
+            return ((correctWordsCount / totalWordTyped) * 100).toFixed(2)
+        }
+        return 0
     };
 
 
@@ -105,11 +122,59 @@ export const TypeRacerContextProvider = ({ children }) => {
         let currentWord = wordsArray[InputValueArray.length];
         let isCorrect = true;
 
+        const CheckCharacterCorrectOrNot = () => {
+
+            //get the currect character of the words from word array
+            let currentWord = wordsArray[InputValueArray.length];
+            let isCorrect = true;
+
+            // Check if backspace is pressed by comparing input lengths
+            if (inputValue.length < InputValueArray[InputValueArray.length - 1]?.length) {
+                // Update the width even when backspace is pressed
+                if (textMeasureRef.current) {
+                    const textwidth = textMeasureRef.current.offsetWidth;
+                    setCurrentWordOffset(textwidth);
+                }
+                // Ignore backspace for incrementing character counts
+                return;
+            }
+
+            // Check each character up to the current input length
+            for (let i = 0; i < inputValue.length; i++) {
+                let currentCharacterOfWordsArray = currentWord ? currentWord[i] : undefined;
+                let currentTypedCharacter = inputValue[i];
+
+
+                // If any character does not match, set isCorrect to false
+                if (currentCharacterOfWordsArray !== currentTypedCharacter) {
+                    setWrongCharactersCount(prev => prev + 1);
+                    isCorrect = false;
+                    break;
+                }
+            }
+
+            setTotalCharacterTyped(prev => prev + 1);
+
+            // Change the color on basis of isCorrect
+            if (isCorrect) {
+                ChangeColorToWhite(inputbox);
+                setCorrectCharactersCount(prev => prev + 1);
+
+                // Measure text width for dynamic adjustment when correct
+                if (textMeasureRef.current) {
+                    const textwidth = textMeasureRef.current.offsetWidth;
+                    setCurrentWordOffset(textwidth);
+                }
+            } else {
+                ChangeColorToRed(inputbox);
+            }
+        }
+
         // Check each character up to the current input length
         for (let i = 0; i < inputValue.length; i++) {
             let currentCharacterOfWordsArray = currentWord ? currentWord[i] : undefined;
             let currentTypedCharacter = inputValue[i];
-            setTotalCharacterTyped(prev => prev + 1);
+
 
             // If any character does not match, set isCorrect to false
             if (currentCharacterOfWordsArray !== currentTypedCharacter) {
@@ -118,6 +183,8 @@ export const TypeRacerContextProvider = ({ children }) => {
                 break;
             }
         }
+
+        setTotalCharacterTyped(prev => prev + 1);
 
         // Change the color on basis of isCorrect
         if (isCorrect) {
@@ -160,7 +227,6 @@ export const TypeRacerContextProvider = ({ children }) => {
         if (ChallengeRef.current && wordRefs.current[InputValueArray.length - 1]) {
             const wordWidth = wordRefs.current[InputValueArray.length - 1].offsetWidth;
             setChallengeWidth((prev) => prev + wordWidth);
-            // console.log(wordWidth, " : ", wordRefs.current[InputValueArray.length])
         }
     };
 
@@ -188,7 +254,8 @@ export const TypeRacerContextProvider = ({ children }) => {
                     // space at end
                     setInputValue(inputString.trim(" "))
 
-                    // Word is completed proceed for word inspection
+                    // Word is completed count the word
+                    setTotalWordTyped(prev => prev + 1);
 
                     setInputValueArray((prevArray) => [
                         ...prevArray,
@@ -232,7 +299,7 @@ export const TypeRacerContextProvider = ({ children }) => {
         CheckCharacterCorrectOrNot,
         CheckWordIsCorrectOrNot,
         handleInput,
-        calculateWPM, calculateCharacterAccuracy, calculateWordAccuracy, wrongWordsCount, wrongCharactersCount, elapsedTime
+        calculateWPM, calculateCharacterAccuracy, calculateWordAccuracy, wrongWordsCount, wrongCharactersCount, elapsedTime, setElapsedTime
     };
 
     return (

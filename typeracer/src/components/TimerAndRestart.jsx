@@ -9,7 +9,6 @@ function TimerAndRestart() {
         if (timer > 0 && gameStarted) {
             const interval = setInterval(() => {
                 setTimer(prevTimer => prevTimer - 1);
-
             }, 1000);
 
             return () => clearInterval(interval);
@@ -28,9 +27,9 @@ function TimerAndRestart() {
     }, [InputValueArray, wordsArray, setGameOver]);
 
 
-    useEffect(() => {
-        console.log(`GameStart : ${gameStarted}, Gameover : ${gameOver}, GameStartState : ${gameStartState}`)
-    });
+    // useEffect(() => {
+    //     console.log(`GameStart : ${gameStarted}, Gameover : ${gameOver}, GameStartState : ${gameStartState}`)
+    // });
 
     return (
         <>
