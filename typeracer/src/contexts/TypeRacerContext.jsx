@@ -203,20 +203,20 @@ export const TypeRacerContextProvider = ({ children }) => {
 
     const ChangeColorToRed = (EleRef, index = "") => {
         if (index !== "") {
-            EleRef.current[index].style.transition = "all 0.4s ease-out";
+            EleRef.current[index].style.transition = "all 0.7s ease-out";
             EleRef.current[index].style.color = "red";
         } else {
-            EleRef.current.style.transition = "all 0.4s ease-out";
+            EleRef.current.style.transition = "all 0.7s ease-out";
             EleRef.current.style.color = "red";
         }
     };
 
     const ChangeColorToWhite = (EleRef, index = "") => {
         if (index !== "") {
-            EleRef.current[index].style.transition = "all 0.4s ease-out";
+            EleRef.current[index].style.transition = "all 0.7s ease-out";
             EleRef.current[index].style.color = "white";
         } else {
-            EleRef.current.style.transition = "all 0.4s ease-out";
+            EleRef.current.style.transition = "all 0.7s ease-out";
             EleRef.current.style.color = "white";
         }
     };

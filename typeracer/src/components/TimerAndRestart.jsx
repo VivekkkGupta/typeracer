@@ -6,17 +6,18 @@ function TimerAndRestart() {
 
     // Handle timer countdown
     useEffect(() => {
-        if (timer > 0 && gameStarted) {
+        if (timer > 0 && gameStarted && !gameOver) {
             const interval = setInterval(() => {
                 setTimer(prevTimer => prevTimer - 1);
             }, 1000);
+            // console.log(timer)
 
             return () => clearInterval(interval);
         } else if (timer === 0) {
             setGameOver(true);
             setGameStarted(false)
         }
-    }, [timer, gameOver, setTimer, setGameOver]);
+    }, [timer, gameOver,gameStarted]);
 
     useEffect(() => {
         if (InputValueArray.length === wordsArray.length) {

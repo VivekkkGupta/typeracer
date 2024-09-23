@@ -14,12 +14,6 @@ function Inputandchallenge() {
         handleInput,
         gameStartState, gameOver } = useTypeRacerContext()
 
-    const [wrongWordsCount, setWrongWordsCount] = useState(0)
-    const [wrongCharactersCount, setWrongCharactersCount] = useState(0)
-
-    const [totalCharacterTyped, setTotalCharacterTyped] = useState(0)
-    const [totalWordTyped, setTotalWordTyped] = useState(0)
-
 
     useEffect(() => {
         if (!gameStartState) {
@@ -57,7 +51,7 @@ function Inputandchallenge() {
                 <div className="challenge text-left whitespace-nowrap w-full h-[8vh] relative">
                     <div
                         ref={ChallengeRef}
-                        className={`absolute text-gray-500 left-[50%] transition-all ease-out
+                        className={`absolute text-gray-500 left-[50%] transition-all ease-out duration-[0.5s]
                         `}>
 
                         {wordsArray.map((word, wordindex) => (
