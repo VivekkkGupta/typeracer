@@ -8,7 +8,7 @@ export const TypeRacerContextProvider = ({ children }) => {
     const [wordsArray, setWordsArray] = useState(generate(100));
 
     //Timer for game
-    const [timer, setTimer] = useState(5);
+    const [timer, setTimer] = useState(60);
     const [gameOver, setGameOver] = useState(true);
     const [gameStarted, setGameStarted] = useState(false);
     const [gameStartState, setGameStartState] = useState(true);

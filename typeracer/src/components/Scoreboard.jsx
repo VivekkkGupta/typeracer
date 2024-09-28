@@ -30,7 +30,7 @@ function Scoreboard() {
 
 
     return (
-        <div className={`bg-slate-900 rounded-lg  p-4 text-xl flex gap-4 text-gray-500 flex flex-col w-[90%] md:w-[50%] lg:w-[30%] `}>
+        <div className={`bg-slate-900 rounded-lg  p-4 text-xl flex gap-4 text-gray-500 flex flex-col ${gameOver ? "w-[90%] md:w-[50%] lg:w-[30%]" : ""} `}>
 
             <div className="flex flex-col items-center justify-center w-full text-bold text-white relative px-10">
                 <span className="text-5xl">
@@ -42,7 +42,7 @@ function Scoreboard() {
                 
             </div>
             {   
-                    <div className={`flex `}>
+                   gameOver && (<div className={`flex `}>
                         <table className='w-full'>
                             <thead className=''>
                                 <tr className='align-center'>
@@ -64,7 +64,7 @@ function Scoreboard() {
                             </tbody>
                             
                         </table>
-                    </div>
+                    </div>)
             }
             
 
