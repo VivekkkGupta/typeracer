@@ -40,6 +40,7 @@ export const TypeRacerContextProvider = ({ children }) => {
 
 
     const gameRestart = () => {
+        
         setTimer(60);
         setWrongWordsCount(0);
         setWrongCharactersCount(0);
@@ -58,7 +59,15 @@ export const TypeRacerContextProvider = ({ children }) => {
         setGameStarted(false)
 
         setWordsArray(generate(100))
+
+        for (let i=0; i<wordsArray.length;i++){
+            ChangeColorToWhite(wordRefs, i)
+        }
+
         inputbox.current.focus();
+
+        
+
     };
 
     const formatTime = (time) => {

@@ -46,7 +46,7 @@ function Scoreboard() {
                         <table className='w-full'>
                             <thead className=''>
                                 <tr className='align-center'>
-                                    <th className="text-white text-4xl" colSpan="2">{gameOver?(gameStartState ? "Typing will start the Test":"Test Over"):"Test Over"}</th>
+                                    <th className="text-white text-4xl" colSpan="2">{gameOver?(gameStartState ? "Start Test by Typing":"Test Over"):"Test Over"}</th>
                                 </tr>
                             </thead>
                             <tbody className='w-full'>
