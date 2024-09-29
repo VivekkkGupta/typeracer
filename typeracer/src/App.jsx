@@ -32,17 +32,18 @@ const App = () => {
   }, [isTyping, testOver, setTimer, setTestOver, setIsTyping]);
 
   return (
-    <div className="bg-black w-full h-screen text-white relative flex flex-col justify-around text-5xl overflow-hidden font-Roboto">
-      {/* <Navbar /> */}
+    <div className="bg-black w-full h-screen text-white relative text-5xl overflow-hidden font-Roboto">
+      <Navbar />
 
-      <div className="flex flex-col gap-5 h-[20vh] w-full">
+      <div className="h-[25vh] w-full">
         <TimerAndRestart />
       </div>
 
+      <div className="h-[30vh] w-full py-5">
+        <Inputandchallenge />
+      </div>
 
-      <Inputandchallenge />
-
-      <div className="flex items-center justify-center w-full">
+      <div className="h-[40vh] w-full">
         <Scoreboard />
       </div>
     </div>

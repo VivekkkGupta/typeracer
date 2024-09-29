@@ -15,44 +15,21 @@ function Inputandchallenge() {
         gameStartState, gameOver } = useTypeRacerContext()
 
 
-    useEffect(() => {
-        if (!gameStartState) {
-            CheckCharacterCorrectOrNot()
-        }
-    }, [inputValue])
-
-    useEffect(() => {
-        if (InputValueArray.length !== wordsArray.length) {
-            CheckWordIsCorrectOrNot();
-        }
-        setInputValue(""); // Reset input after checking the word
-        shiftChallengeView();
-    }, [InputValueArray])
-
-    useEffect(() => {
-        if (ChallengeRef.current) {
-            ChallengeRef.current.style.left = `calc(50% - ${challengeWidth}px)`;
-        }
-    }, [challengeWidth]);
-
-    useEffect(() => {
-        if (inputbox.current) {
-            inputbox.current.style.paddingLeft = `calc(50% - ${currentWordOffset}px)`;
-        }
-    }, [currentWordOffset])
-
 
     return (
-        <div className='relative bg-black'>
-            <div className='absolute inset-0 bg-gradient-to-r from-black via-transparent to-black pointer-events-none z-10'>
+        <div className='relative flex flex-col justify-center gap-2'>
+            <div className='absolute inset-0'>
+                <div className='absolute inset-0 bg-gradient-to-r from-black via-transparent to-black pointer-events-none z-30'>
+                </div>
             </div>
-            <div className="flex flex-col gap-5 z-20">
+
+            <div className=" gap-2 h-full z-20">
 
                 <div className="challenge text-left whitespace-nowrap w-full h-[8vh] relative">
                     <div
                         ref={ChallengeRef}
                         className={`absolute text-gray-500 left-[50%] transition-all ease-out duration-[0.5s]
-                        `}>
+                            `}>
 
                         {wordsArray.map((word, wordindex) => (
                             <>

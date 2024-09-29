@@ -40,7 +40,7 @@ export const TypeRacerContextProvider = ({ children }) => {
 
 
     const gameRestart = () => {
-        
+
         setTimer(60);
         setWrongWordsCount(0);
         setWrongCharactersCount(0);
@@ -59,14 +59,18 @@ export const TypeRacerContextProvider = ({ children }) => {
         setGameStarted(false)
 
         setWordsArray(generate(100))
+        // Reset the color of all the word elements to text-gray-400
+        wordRefs.current.forEach((wordElement, index) => {
+            if (wordElement) {
+                wordElement.style.transition = "none"; // Avoid transition effects on restart
+                wordElement.style.color = "gray"; // Change to gray-400
+            }
+        });
 
-        for (let i=0; i<wordsArray.length;i++){
-            ChangeColorToWhite(wordRefs, i)
+        // Focus on the input box after restart
+        if (inputbox.current) {
+            inputbox.current.focus();
         }
-
-        inputbox.current.focus();
-
-        
 
     };
 
@@ -131,53 +135,6 @@ export const TypeRacerContextProvider = ({ children }) => {
         let currentWord = wordsArray[InputValueArray.length];
         let isCorrect = true;
 
-        const CheckCharacterCorrectOrNot = () => {
-
-            //get the currect character of the words from word array
-            let currentWord = wordsArray[InputValueArray.length];
-            let isCorrect = true;
-
-            // Check if backspace is pressed by comparing input lengths
-            if (inputValue.length < InputValueArray[InputValueArray.length - 1]?.length) {
-                // Update the width even when backspace is pressed
-                if (textMeasureRef.current) {
-                    const textwidth = textMeasureRef.current.offsetWidth;
-                    setCurrentWordOffset(textwidth);
-                }
-                // Ignore backspace for incrementing character counts
-                return;
-            }
-
-            // Check each character up to the current input length
-            for (let i = 0; i < inputValue.length; i++) {
-                let currentCharacterOfWordsArray = currentWord ? currentWord[i] : undefined;
-                let currentTypedCharacter = inputValue[i];
-
-
-                // If any character does not match, set isCorrect to false
-                if (currentCharacterOfWordsArray !== currentTypedCharacter) {
-                    setWrongCharactersCount(prev => prev + 1);
-                    isCorrect = false;
-                    break;
-                }
-            }
-
-            setTotalCharacterTyped(prev => prev + 1);
-
-            // Change the color on basis of isCorrect
-            if (isCorrect) {
-                ChangeColorToWhite(inputbox);
-                setCorrectCharactersCount(prev => prev + 1);
-
-                // Measure text width for dynamic adjustment when correct
-                if (textMeasureRef.current) {
-                    const textwidth = textMeasureRef.current.offsetWidth;
-                    setCurrentWordOffset(textwidth);
-                }
-            } else {
-                ChangeColorToRed(inputbox);
-            }
-        }
 
         // Check each character up to the current input length
         for (let i = 0; i < inputValue.length; i++) {
@@ -279,6 +236,34 @@ export const TypeRacerContextProvider = ({ children }) => {
     }
 
 
+    //Usestates of Inputandchallenge
+    useEffect(() => {
+        if (!gameStartState && !gameOver) {
+            CheckCharacterCorrectOrNot()
+        }
+    }, [inputValue])
+
+    useEffect(() => {
+        if (InputValueArray.length !== wordsArray.length) {
+            CheckWordIsCorrectOrNot();
+        }
+        setInputValue(""); // Reset input after checking the word
+        shiftChallengeView();
+    }, [InputValueArray])
+
+    useEffect(() => {
+        if (ChallengeRef.current) {
+            ChallengeRef.current.style.left = `calc(50% - ${challengeWidth}px)`;
+        }
+    }, [challengeWidth]);
+
+    useEffect(() => {
+        if (inputbox.current) {
+            inputbox.current.style.paddingLeft = `calc(50% - ${currentWordOffset}px)`;
+        }
+    }, [currentWordOffset])
+
+
 
     const values = {
         wordsArray, setWordsArray,
@@ -308,7 +293,7 @@ export const TypeRacerContextProvider = ({ children }) => {
         CheckCharacterCorrectOrNot,
         CheckWordIsCorrectOrNot,
         handleInput,
-        calculateWPM, calculateCharacterAccuracy, calculateWordAccuracy, wrongWordsCount, wrongCharactersCount, elapsedTime, setElapsedTime
+        calculateWPM, calculateCharacterAccuracy, calculateWordAccuracy, correctWordsCount, wrongWordsCount, wrongCharactersCount, elapsedTime, setElapsedTime
     };
 
     return (
