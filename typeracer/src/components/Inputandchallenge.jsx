@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import { motion } from "framer-motion"
 import { useTypeRacerContext } from "../contexts/TypeRacerContext"
 
 function Inputandchallenge() {
@@ -12,20 +12,26 @@ function Inputandchallenge() {
         CheckCharacterCorrectOrNot,
         CheckWordIsCorrectOrNot,
         handleInput,
-        gameStartState, gameOver } = useTypeRacerContext()
+        gameStartState, gameOver,
+        slideInVariant } = useTypeRacerContext()
 
 
 
     return (
-        <div className='relative flex flex-col justify-center gap-2'>
+        <div className='relative flex flex-col h-full justify-center'>
             <div className='absolute inset-0'>
                 <div className='absolute inset-0 bg-gradient-to-r from-black via-transparent to-black pointer-events-none z-30'>
                 </div>
             </div>
 
-            <div className=" gap-2 h-full z-20">
+            <motion.div className="h-full z-20 flex flex-col justify-center gap-2">
 
-                <div className="challenge text-left whitespace-nowrap w-full h-[8vh] relative">
+                <motion.div className="challenge text-left whitespace-nowrap w-full h-[8vh] relative"
+                    variants={slideInVariant}
+                    initial='hidden'
+                    animate='visible'
+                    exit='exit'
+                >
                     <div
                         ref={ChallengeRef}
                         className={`absolute text-gray-500 left-[50%] transition-all ease-out duration-[0.5s]
@@ -46,9 +52,13 @@ function Inputandchallenge() {
                             </>
                         ))}
                     </div>
-                </div>
+                </motion.div>
 
-                <div className="flex justify-end relative">
+                <motion.div className="flex justify-end relative"
+                    variants={slideInVariant}
+                    initial='hidden'
+                    animate='visible'
+                    exit='exit'>
                     <input
                         ref={inputbox}
                         onChange={(e) => handleInput(e)}
@@ -66,9 +76,9 @@ function Inputandchallenge() {
                         style={{ font: 'inherit' }}>
                         {inputValue}
                     </span>
-                </div>
+                </motion.div>
 
-            </div>
+            </motion.div>
         </div>
     )
 }

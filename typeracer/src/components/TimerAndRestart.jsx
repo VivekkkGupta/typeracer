@@ -1,8 +1,11 @@
 import React, { useEffect } from "react";
+import { motion } from "framer-motion"
 import { useTypeRacerContext } from "../contexts/TypeRacerContext"
 
 function TimerAndRestart() {
-    const { gameStarted, setGameStarted, gameOver, setGameOver, timer, setTimer, gameRestart, InputValueArray, wordsArray, formatTime, gameStartState, setGameStartState } = useTypeRacerContext()
+    const { gameStarted, setGameStarted, gameOver, setGameOver, timer, setTimer, gameRestart, InputValueArray, wordsArray, formatTime, gameStartState, setGameStartState,
+        rotateVariant
+    } = useTypeRacerContext()
 
     // Handle timer countdown
     useEffect(() => {
@@ -60,14 +63,19 @@ function TimerAndRestart() {
                     )}
                 </div>
 
-                <div className="restart flex items-center justify-center w-full">
-                    <div className={`rounded-full cursor-pointer transition-all ease-out duration-500 hover:rotate-[180deg] hover:text-white text-gray-500
-                ${gameOver ? "text-white" : "text-gray-500"}
-                `} onClick={gameRestart}>
+                <motion.div className="restart flex items-center justify-center w-full">
+                    <motion.div className={`rounded-full cursor-pointer transition-all ease-out duration-500 hover:rotate-[180deg] hover:text-white text-gray-500
+                    ${gameOver ? "text-white rotate-[180deg]" : "text-gray-500"}
+                    `}
+                        onClick={gameRestart}
+                        variants={rotateVariant}
+                        initial=' hidden'
+                        animate='rotate180'
+                    >
                         <i className="ri-refresh-line "></i>
-                    </div>
-                </div>
-            </div>
+                    </motion.div>
+                </motion.div>
+            </div >
         </>
     );
 }

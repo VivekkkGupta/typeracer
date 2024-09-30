@@ -8,7 +8,7 @@ export const TypeRacerContextProvider = ({ children }) => {
     const [wordsArray, setWordsArray] = useState(generate(100));
 
     //Timer for game
-    const [timer, setTimer] = useState(60);
+    const [timer, setTimer] = useState(5);
     const [gameOver, setGameOver] = useState(true);
     const [gameStarted, setGameStarted] = useState(false);
     const [gameStartState, setGameStartState] = useState(true);
@@ -235,6 +235,19 @@ export const TypeRacerContextProvider = ({ children }) => {
         }
     }
 
+    // Animation variants
+
+    const slideInVariant = {
+        hidden: { opacity: 0, y: 100 },
+        visible: { opacity: 1, y: 0, transition: { duration: 0.7 } },
+        exit: { opacity: 0, y: 100, transition: { duration: 0.7 } }
+    };
+
+    const rotateVariant = {
+        hidden: { opacity: 1 },
+        rotate180: { rotate: '180deg', transition: { duration: 0.7 } }
+    }
+
 
     //Usestates of Inputandchallenge
     useEffect(() => {
@@ -242,6 +255,15 @@ export const TypeRacerContextProvider = ({ children }) => {
             CheckCharacterCorrectOrNot()
         }
     }, [inputValue])
+
+
+
+    useEffect(() => {
+        let inputElement = inputbox.current;
+        inputElement.focus();
+    }, [inputbox]);
+
+
 
     useEffect(() => {
         if (InputValueArray.length !== wordsArray.length) {
@@ -293,7 +315,8 @@ export const TypeRacerContextProvider = ({ children }) => {
         CheckCharacterCorrectOrNot,
         CheckWordIsCorrectOrNot,
         handleInput,
-        calculateWPM, calculateCharacterAccuracy, calculateWordAccuracy, correctWordsCount, wrongWordsCount, wrongCharactersCount, elapsedTime, setElapsedTime
+        calculateWPM, calculateCharacterAccuracy, calculateWordAccuracy, correctWordsCount, wrongWordsCount, wrongCharactersCount, elapsedTime, setElapsedTime,
+        slideInVariant, rotateVariant
     };
 
     return (

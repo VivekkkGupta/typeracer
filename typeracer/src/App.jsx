@@ -4,14 +4,10 @@ import Navbar from "./components/Navbar";
 import TimerAndRestart from "./components/TimerAndRestart";
 import Inputandchallenge from "./components/Inputandchallenge";
 import { useTypeRacerContext } from "./contexts/TypeRacerContext";
+import { motion, AnimatePresence } from 'framer-motion';
 
 const App = () => {
-  const { inputbox, isTyping, setIsTyping, testOver, setTestOver, setTimer } = useTypeRacerContext();
-
-  useEffect(() => {
-    let inputElement = inputbox.current;
-    inputElement.focus();
-  }, [inputbox]);
+  const { isTyping, setIsTyping, testOver, setTestOver, setTimer, gameStartState, gameOver } = useTypeRacerContext();
 
   useEffect(() => {
     let interval;
@@ -31,22 +27,33 @@ const App = () => {
     return () => clearInterval(interval);
   }, [isTyping, testOver, setTimer, setTestOver, setIsTyping]);
 
+
   return (
-    <div className="bg-black w-full h-screen text-white relative text-5xl overflow-hidden font-Roboto">
+    <div className="bg-black w-full h-screen text-white relative text-5xl overflow-hidden font-Roboto flex flex-col justify-between">
+      
       <Navbar />
 
-      <div className="h-[25vh] w-full">
+      <div className="h-[25vh] w-full ">
         <TimerAndRestart />
       </div>
 
-      <div className="h-[30vh] w-full py-5">
-        <Inputandchallenge />
-      </div>
+      <AnimatePresence>
+        <motion.div className={`h-[30vh] w-full transition-all duration-500`}>
+          <Inputandchallenge />
+        </motion.div>
+      </AnimatePresence>
 
-      <div className="h-[40vh] w-full">
-        <Scoreboard />
-      </div>
-    </div>
+      <AnimatePresence>
+        <motion.div className={`transition-all duration-500 w-full`}
+          initial={{ height: '25vh' }}
+          animate={{ height: gameOver ? '50vh' : '25vh' }}
+        >
+          < Scoreboard />
+        </motion.div>
+      </AnimatePresence>
+
+
+    </div >
   );
 };
 
