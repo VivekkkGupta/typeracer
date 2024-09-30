@@ -4,7 +4,7 @@ import { useTypeRacerContext } from "../contexts/TypeRacerContext"
 
 function TimerAndRestart() {
     const { gameStarted, setGameStarted, gameOver, setGameOver, timer, setTimer, gameRestart, InputValueArray, wordsArray, formatTime, gameStartState, setGameStartState,
-        rotateVariant
+        rotateVariant, flashInVariant
     } = useTypeRacerContext()
 
     // Handle timer countdown
@@ -40,26 +40,34 @@ function TimerAndRestart() {
 
                 <div className="timer flex items-center justify-center gap-4 w-full">
                     {gameStartState && (
-                        <span
+                        <motion.span
                             className="transition-all ease-out duration-500 hover:text-white text-gray-500 cursor-pointer"
                             onClick={() =>
                                 setTimer((prevtimer) => (prevtimer > 0 ? prevtimer - 15 : prevtimer))
                             }
+                            variants={flashInVariant}
+                            initial='hidden'
+                            animate='visible'
+                            exit='exit'
                         >
                             <i className="ri-subtract-line"></i>
-                        </span>
+                        </motion.span>
                     )}
                     <div className="text-gray-500 transition-all ease-out duration-500">
                         {formatTime(timer)}
                     </div>
 
                     {gameStartState && (
-                        <span
+                        <motion.span
                             className="transition-all ease-out duration-500 hover:text-white text-gray-500 cursor-pointer"
                             onClick={() => setTimer((prevtimer) => prevtimer + 15)}
+                            variants={flashInVariant}
+                            initial='hidden'
+                            animate='visible'
+                            exit='exit'
                         >
                             <i className="ri-add-line"></i>
-                        </span>
+                        </motion.span>
                     )}
                 </div>
 
@@ -69,8 +77,8 @@ function TimerAndRestart() {
                     `}
                         onClick={gameRestart}
                         variants={rotateVariant}
-                        initial=' hidden'
-                        animate='rotate180'
+                    // initial=' hidden'
+                    // animate='rotate180'
                     >
                         <i className="ri-refresh-line "></i>
                     </motion.div>

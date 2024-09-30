@@ -243,6 +243,18 @@ export const TypeRacerContextProvider = ({ children }) => {
         exit: { opacity: 0, y: 100, transition: { duration: 0.7 } }
     };
 
+    const flashInVariant = {
+        hidden: { opacity: 0 },
+        visible: { opacity: 1, transition: { duration: 0.7 } },
+        exit: { opacity: 0, transition: { duration: 0.7 } }
+    };
+
+    const expandInVariant = {
+        hidden: { height: 0, opacity: 0 },
+        visible: { height: 'auto', opacity: 1, transition: { duration: 0.5 } },
+        exit: { height: 0, opacity: 0, transition: { duration: 0.5 } }
+    };
+
     const rotateVariant = {
         hidden: { opacity: 1 },
         rotate180: { rotate: '180deg', transition: { duration: 0.7 } }
@@ -316,7 +328,7 @@ export const TypeRacerContextProvider = ({ children }) => {
         CheckWordIsCorrectOrNot,
         handleInput,
         calculateWPM, calculateCharacterAccuracy, calculateWordAccuracy, correctWordsCount, wrongWordsCount, wrongCharactersCount, elapsedTime, setElapsedTime,
-        slideInVariant, rotateVariant
+        slideInVariant, rotateVariant, flashInVariant, expandInVariant
     };
 
     return (
