@@ -39,13 +39,10 @@ function Navbar() {
     };
 
     return (
-
         <>
-
-
             <div className="absolute top-5 right-2 p-5 flex flex-col gap-2 text-3xl rounded-xl">
 
-                <div className={`${isSettingsOpen ? "opacity-100 top-5" : "opacity-0 top-0"} z-[99999] absolute text-xl bg-slate-900 rounded-lg left-[-350%] text-white  flex flex-col transition-all duration-500`}>
+                <div className={`${isSettingsOpen ? "opacity-100 top-5 z-[99999]" : "opacity-0 top-0 z-[-9]"}  absolute text-xl bg-slate-900 rounded-lg left-[-350%] text-white  flex flex-col transition-all duration-500`}>
 
                     {['Theme', 'Word Mode', 'Language', 'Text Size'].map((item, index) => (
                         <div key={index} className="w-[15vw] cursor-pointer">
@@ -57,16 +54,50 @@ function Navbar() {
                                 <i className={`ri-arrow-left-s-line transition-transform duration-500 ${openSettingIndex === index ? 'rotate-[-90deg]' : ''}`}
                                 ></i>
                             </div>
+                            
                             <AnimatePresence>
-                                {openSettingIndex === index && (
+                                {openSettingIndex === 0 && (
                                     <motion.div className="text-base bg-slate-800 rounded-lg overflow-hidden"
                                         variants={expandInVariant}
                                         initial='hidden'
                                         animate='visible'
                                         exit='exit'
                                     >
-                                        <motion.div className="hover:bg-blue-900  hover:rounded-lg px-8 py-2">Option 1</motion.div>
-                                        <motion.div className="hover:bg-blue-900  hover:rounded-lg px-8 py-2">Option 2</motion.div>
+                                        <motion.div className="hover:bg-blue-900 hover:rounded-lg px-8 py-2">Dark Mode</motion.div>
+                                        <motion.div className="hover:bg-blue-900 hover:rounded-lg px-8 py-2">Light Mode</motion.div>
+                                    </motion.div>
+                                )}
+                                {openSettingIndex === 1 && (
+                                    <motion.div className="text-base bg-slate-800 rounded-lg overflow-hidden"
+                                        variants={expandInVariant}
+                                        initial='hidden'
+                                        animate='visible'
+                                        exit='exit'
+                                    >
+                                        <motion.div className="hover:bg-blue-900 hover:rounded-lg px-8 py-2">Words</motion.div>
+                                        <motion.div className="hover:bg-blue-900 hover:rounded-lg px-8 py-2">Sentences</motion.div>
+                                    </motion.div>
+                                )}
+                                {openSettingIndex === 2 && (
+                                    <motion.div className="text-base bg-slate-800 rounded-lg overflow-hidden"
+                                        variants={expandInVariant}
+                                        initial='hidden'
+                                        animate='visible'
+                                        exit='exit'
+                                    >
+                                        <motion.div className="hover:bg-blue-900 hover:rounded-lg px-8 py-2">English</motion.div>
+                                    </motion.div>
+                                )}
+                                {openSettingIndex === 3 && (
+                                    <motion.div className="text-base bg-slate-800 rounded-lg overflow-hidden"
+                                        variants={expandInVariant}
+                                        initial='hidden'
+                                        animate='visible'
+                                        exit='exit'
+                                    >
+                                        <motion.div className="hover:bg-blue-900 hover:rounded-lg px-8 py-2">Small</motion.div>
+                                        <motion.div className="hover:bg-blue-900 hover:rounded-lg px-8 py-2">Medium</motion.div>
+                                        <motion.div className="hover:bg-blue-900 hover:rounded-lg px-8 py-2">Large</motion.div>
                                     </motion.div>
                                 )}
                             </AnimatePresence>
