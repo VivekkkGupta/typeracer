@@ -88,12 +88,12 @@ function TimerAndRestart() {
             </div>
 
             <motion.div className="restart flex items-center justify-center w-full">
-                <motion.div className={`rounded-full cursor-pointer hover:rotate-[180deg] hover:text-black dark:hover:text-white text-gray-500 
-                ${gameOver ? "!text-black dark:!text-white" : "text-gray-500"}`}
+                <motion.div className={`rounded-full cursor-pointer hover:rotate-[180deg] hover:text-black dark:hover:text-white 
+                ${gameOver ? gameStartState ? "!text-black dark:!text-white" : "" : "text-gray-500"}`}
                     onClick={gameRestart}
                     variants={rotateVariant}
                     initial="hidden"
-                    animate={gameOver ? 'rotate180' : ""}
+                    animate={gameOver ? 'rotate180' : 'hidden'}
                 >
                     <i className="ri-refresh-line "></i>
                 </motion.div>

@@ -53,7 +53,7 @@ function Scoreboard() {
             </div>
 
             <AnimatePresence>
-                {gameOver && (
+                {gameOver && gameStartState && (
                     <div className="w-full flex justify-center gap-4 mb-2">
                         {Object.keys(advancedScoreObj).map((key) => (
                             <motion.div

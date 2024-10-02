@@ -1,6 +1,8 @@
 import React, { createContext, useContext, useState, useRef, useEffect } from "react";
 import { generate } from "random-words";
 import { useThemeContext } from './ThemeContext'
+import { sentence } from 'txtgen'
+
 
 const TypeRacerContext = createContext();
 
@@ -8,11 +10,23 @@ export const TypeRacerContextProvider = ({ children }) => {
 
     const { theme } = useThemeContext()
 
+    // function to generate sentences
+
+    const generateSentence = (len = 100) => {
+        let mySentence = ""
+        while (mySentence.split(" ").length < len) {
+            mySentence += sentence()
+        }
+        return mySentence.split(" ")
+    }
+
     //array for challenge
-    const [wordsArray, setWordsArray] = useState(generate(100));
+    // const [wordsArray, setWordsArray] = useState(generate(100));
+    const [wordsArray, setWordsArray] = useState(generateSentence(100));
 
     //Navbar States
-    const [gameModeWordsOrSentences, setGameModeWordsOrSentences] = useState('words');
+    const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+    const [gameModeWordsOrSentences, setGameModeWordsOrSentences] = useState('sentences');
     const [gameTextSize, setGameTextSize] = useState('large');
 
     //Timer for game
@@ -66,7 +80,11 @@ export const TypeRacerContextProvider = ({ children }) => {
         setGameOver(false)
         setGameStarted(false)
 
-        setWordsArray(generate(100))
+        if (gameModeWordsOrSentences === 'sentences') {
+            setWordsArray(generateSentence(100))
+        } else {
+            setWordsArray(generate(100))
+        }
         // Reset the color of all the word elements to text-gray-400
         wordRefs.current.forEach((wordElement, index) => {
             if (wordElement) {
@@ -79,8 +97,9 @@ export const TypeRacerContextProvider = ({ children }) => {
         if (inputbox.current) {
             inputbox.current.focus();
         }
-
     };
+
+
 
     const formatTime = (time) => {
         const minutes = Math.floor(time / 60);
@@ -268,12 +287,15 @@ export const TypeRacerContextProvider = ({ children }) => {
         visible: { height: 'auto', opacity: 1, transition: { duration: 0.5 } },
         exit: { height: 0, opacity: 0, transition: { duration: 0.5 } }
     };
-
+    // Animation Variants
     const rotateVariant = {
-        hidden: { opacity: 1 },
-        rotate180: { rotate: '180deg', transition: { duration: 0.7 } }
+        hidden: { rotate: '0deg', transition: { duration: 0.5 } },
+        rotate180: { rotate: '180deg', transition: { duration: 0.5 } }
+    };
+    const handleNav = () => {
+        setIsSettingsOpen(false)
+        console.log("ckck")
     }
-
 
 
     //Usestates of Inputandchallenge
@@ -344,7 +366,8 @@ export const TypeRacerContextProvider = ({ children }) => {
         handleInput,
         calculateWPM, calculateCharacterAccuracy, calculateWordAccuracy, correctWordsCount, wrongWordsCount, wrongCharactersCount, elapsedTime, setElapsedTime,
         slideInVariant, rotateVariant, flashInVariant, expandInVariant,
-        gameModeWordsOrSentences, setGameModeWordsOrSentences, gameTextSize, setGameTextSize,
+        isSettingsOpen, setIsSettingsOpen, gameModeWordsOrSentences, setGameModeWordsOrSentences, gameTextSize, setGameTextSize,
+        handleNav
     };
 
     return (

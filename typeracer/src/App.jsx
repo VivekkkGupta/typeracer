@@ -9,7 +9,7 @@ import { useThemeContext } from "./contexts/ThemeContext";
 import { motion, AnimatePresence } from 'framer-motion';
 
 const App = () => {
-  const { isTyping, setIsTyping, testOver, setTestOver, setTimer, gameOver, gameTextSize, gameRestart, gameModeWordsOrSentences } = useTypeRacerContext();
+  const { isTyping, setIsTyping, testOver, setTestOver, setTimer, gameOver, gameTextSize, gameRestart, gameModeWordsOrSentences, handleNav, isSettingsOpen, setIsSettingsOpen, gameStartState } = useTypeRacerContext();
 
   const { theme } = useThemeContext()
 
@@ -41,6 +41,12 @@ const App = () => {
      
     overflow-hidden font-Roboto flex flex-col justify-between`}>
 
+      {isSettingsOpen &&
+        <div className="absolute inset-0 bg-black opacity-[50%] z-[999] backdrop-blur-xl transition-all duration-500"
+          onClick={handleNav}
+        >
+        </div>}
+
       <Navbar />
 
       <div className="h-[25vh] w-full ">
@@ -56,7 +62,7 @@ const App = () => {
       <AnimatePresence>
         <motion.div className={`transition-all duration-500 w-full`}
           initial={{ height: '25vh' }}
-          animate={{ height: gameOver ? '50vh' : '25vh' }}
+          animate={{ height: gameOver && gameStartState ? '50vh' : '25vh' }}
         >
           < Scoreboard />
         </motion.div>

@@ -5,11 +5,11 @@ import { useThemeContext } from "../contexts/ThemeContext";
 
 function Navbar() {
 
-    const { expandInVariant, gameModeWordsOrSentences, setGameModeWordsOrSentences, gameTextSize, setGameTextSize, flashInVariant } = useTypeRacerContext();
+    const { expandInVariant, gameModeWordsOrSentences, setGameModeWordsOrSentences, gameTextSize, setGameTextSize, flashInVariant, isSettingsOpen, setIsSettingsOpen } = useTypeRacerContext();
 
     const { theme, setTheme } = useThemeContext();
 
-    const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+
     const [isInfoOpen, setInfoOpen] = useState(false);
     const [isCopied, setIsCopied] = useState(false);
     const [openSettingIndex, setOpenSettingIndex] = useState(null);
@@ -39,7 +39,7 @@ function Navbar() {
 
     return (
         <>
-            <div className="absolute top-5 right-2 p-5 flex flex-col gap-2 text-3xl rounded-xl">
+            <div className="absolute top-5 right-2 p-5 flex flex-col gap-2 text-3xl rounded-xl z-[999999]">
 
 
                 <div className={`${isSettingsOpen ? "opacity-100 top-5 z-[99999]" : "opacity-0 top-0 z-[-9]"} absolute text-xl bg-gray-200 dark:bg-slate-900 rounded-lg left-[-350%] text-black dark:text-white flex flex-col transition-all duration-500`}>
