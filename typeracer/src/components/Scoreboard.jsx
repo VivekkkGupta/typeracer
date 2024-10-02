@@ -76,7 +76,7 @@ function Scoreboard() {
                             initial="hidden"
                             animate="visible"
                             exit="exit"
-                            className="bg-slate-900 rounded-lg h-[20vh] p-2 text-white flex items-center justify-center flex-col basis-[15vw] cursor-pointer hover:bg-blue-900"
+                            className="bg-gray-200 dark:bg-slate-900 text-black dark:text-white rounded-lg h-[20vh] p-2  flex items-center justify-center flex-col basis-[15vw] cursor-pointer hover:bg-blue-300"
                             onClick={gameRestart}
                         >
                             <div className="text-2xl"><i className="ri-restart-line"></i> Restart!</div>

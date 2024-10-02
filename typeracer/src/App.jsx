@@ -4,11 +4,14 @@ import Navbar from "./components/Navbar";
 import TimerAndRestart from "./components/TimerAndRestart";
 import Inputandchallenge from "./components/Inputandchallenge";
 import { useTypeRacerContext } from "./contexts/TypeRacerContext";
+import { useThemeContext } from "./contexts/ThemeContext";
 ;
 import { motion, AnimatePresence } from 'framer-motion';
 
 const App = () => {
-  const { isTyping, setIsTyping, testOver, setTestOver, setTimer, gameStartState, gameOver, theme } = useTypeRacerContext();
+  const { isTyping, setIsTyping, testOver, setTestOver, setTimer, gameOver, gameTextSize, gameRestart, gameModeWordsOrSentences } = useTypeRacerContext();
+
+  const { theme } = useThemeContext()
 
   useEffect(() => {
     let interval;
@@ -29,12 +32,14 @@ const App = () => {
   }, [isTyping, testOver, setTimer, setTestOver, setIsTyping]);
 
   useEffect(() => {
-    document.body.className = theme; // sets body class based on theme
-  }, [theme]);
-
+    gameRestart()
+  }, [theme, gameTextSize, gameModeWordsOrSentences])
 
   return (
-    <div className="bg-gray-300 dark:bg-black w-full h-screen text-black dark:text-white relative text-5xl overflow-hidden font-Roboto flex flex-col justify-between">
+    <div className={`bg-gray-300 dark:bg-black w-full h-screen text-black dark:text-white relative 
+    ${gameTextSize === 'small' ? 'text-3xl' : gameTextSize === 'medium' ? 'text-4xl' : 'text-5xl'}
+     
+    overflow-hidden font-Roboto flex flex-col justify-between`}>
 
       <Navbar />
 

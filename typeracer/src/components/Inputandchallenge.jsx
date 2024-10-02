@@ -14,7 +14,7 @@ function Inputandchallenge() {
     return (
         <div className='relative flex flex-col h-full justify-center'>
             <div className='absolute inset-0'>
-                <div className='absolute inset-0 bg-gradient-to-r from-gray-300 dark:from-black via-transparent to-gray-300 dark:to-black pointer-events-none z-30'>
+                <div className='absolute inset-0 bg-gradient-to-r from-gray-300 dark:from-black via-transparent dark:via-transparent to-gray-300 dark:to-black pointer-events-none z-30'>
                 </div>
             </div>
 
@@ -28,7 +28,7 @@ function Inputandchallenge() {
                 >
                     <div
                         ref={ChallengeRef}
-                        className={`absolute text-gray-500 left-[50%] transition-all ease-out duration-[0.5s]
+                        className={`absolute text-gray-500 left-[50%] transition-all ease-out duration-500
                             `}>
 
                         {wordsArray.map((word, wordindex) => (

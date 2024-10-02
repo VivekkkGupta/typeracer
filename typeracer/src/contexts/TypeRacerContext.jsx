@@ -1,9 +1,13 @@
 import React, { createContext, useContext, useState, useRef, useEffect } from "react";
 import { generate } from "random-words";
+import { useThemeContext } from './ThemeContext'
 
 const TypeRacerContext = createContext();
 
 export const TypeRacerContextProvider = ({ children }) => {
+
+    const { theme } = useThemeContext()
+
     //array for challenge
     const [wordsArray, setWordsArray] = useState(generate(100));
 
@@ -173,8 +177,10 @@ export const TypeRacerContextProvider = ({ children }) => {
 
     const ChangeColorToRed = (EleRef, index = "") => {
         if (index !== "") {
-            EleRef.current[index].style.transition = "all 0.7s ease-out";
-            EleRef.current[index].style.color = "red";
+            if (EleRef.current[index]) {
+                EleRef.current[index].style.transition = "all 0.7s ease-out";
+                EleRef.current[index].style.color = "red";
+            }
         } else {
             EleRef.current.style.transition = "all 0.7s ease-out";
             EleRef.current.style.color = "red";
@@ -182,18 +188,19 @@ export const TypeRacerContextProvider = ({ children }) => {
     };
 
     const ChangeColorToWhite = (EleRef, index = "") => {
+        const color = theme === 'dark' ? 'white' : 'black'; // Black in dark mode, white in light mode
         if (index !== "") {
-            // For a specific element in the ref array
-            EleRef.current[index].style.transition = "all 0.7s ease-out"; // Add transition
-            EleRef.current[index].classList.add("text-black"); // Add text-white class
-            EleRef.current[index].classList.add("dark:text-white"); // Add text-white class
+            if (EleRef.current[index]) {
+                EleRef.current[index].style.transition = "all 0.7s ease-out";
+                EleRef.current[index].style.color = color;
+            }
         } else {
-            // For the main element
-            EleRef.current.style.transition = "all 0.7s ease-out"; // Add transition
-            EleRef.current.classList.add("text-black"); // Add text-white class
-            EleRef.current.classList.add("dark:text-white"); // Add text-white class
+            EleRef.current.style.transition = "all 0.7s ease-out";
+            EleRef.current.style.color = color;
         }
     };
+
+
 
     // Move the challenge view to keep the current word in the center
     const shiftChallengeView = () => {
