@@ -7,6 +7,10 @@ export const TypeRacerContextProvider = ({ children }) => {
     //array for challenge
     const [wordsArray, setWordsArray] = useState(generate(100));
 
+    //Navbar States
+    const [gameModeWordsOrSentences, setGameModeWordsOrSentences] = useState('words');
+    const [gameTextSize, setGameTextSize] = useState('large');
+
     //Timer for game
     const [timer, setTimer] = useState(5);
     const [gameOver, setGameOver] = useState(true);
@@ -179,14 +183,17 @@ export const TypeRacerContextProvider = ({ children }) => {
 
     const ChangeColorToWhite = (EleRef, index = "") => {
         if (index !== "") {
-            EleRef.current[index].style.transition = "all 0.7s ease-out";
-            EleRef.current[index].style.color = "white";
+            // For a specific element in the ref array
+            EleRef.current[index].style.transition = "all 0.7s ease-out"; // Add transition
+            EleRef.current[index].classList.add("text-black"); // Add text-white class
+            EleRef.current[index].classList.add("dark:text-white"); // Add text-white class
         } else {
-            EleRef.current.style.transition = "all 0.7s ease-out";
-            EleRef.current.style.color = "white";
+            // For the main element
+            EleRef.current.style.transition = "all 0.7s ease-out"; // Add transition
+            EleRef.current.classList.add("text-black"); // Add text-white class
+            EleRef.current.classList.add("dark:text-white"); // Add text-white class
         }
     };
-
 
     // Move the challenge view to keep the current word in the center
     const shiftChallengeView = () => {
@@ -245,8 +252,8 @@ export const TypeRacerContextProvider = ({ children }) => {
 
     const flashInVariant = {
         hidden: { opacity: 0 },
-        visible: { opacity: 1, transition: { duration: 0.7 } },
-        exit: { opacity: 0, transition: { duration: 0.7 } }
+        visible: { opacity: 1, transition: { duration: 0.5 } },
+        exit: { opacity: 0, transition: { duration: 0.5 } }
     };
 
     const expandInVariant = {
@@ -259,6 +266,7 @@ export const TypeRacerContextProvider = ({ children }) => {
         hidden: { opacity: 1 },
         rotate180: { rotate: '180deg', transition: { duration: 0.7 } }
     }
+
 
 
     //Usestates of Inputandchallenge
@@ -328,7 +336,8 @@ export const TypeRacerContextProvider = ({ children }) => {
         CheckWordIsCorrectOrNot,
         handleInput,
         calculateWPM, calculateCharacterAccuracy, calculateWordAccuracy, correctWordsCount, wrongWordsCount, wrongCharactersCount, elapsedTime, setElapsedTime,
-        slideInVariant, rotateVariant, flashInVariant, expandInVariant
+        slideInVariant, rotateVariant, flashInVariant, expandInVariant,
+        gameModeWordsOrSentences, setGameModeWordsOrSentences, gameTextSize, setGameTextSize,
     };
 
     return (

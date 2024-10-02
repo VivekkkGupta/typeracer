@@ -2,15 +2,9 @@ import { motion } from "framer-motion"
 import { useTypeRacerContext } from "../contexts/TypeRacerContext"
 
 function Inputandchallenge() {
-    const { wordsArray, inputbox, inputValue, setInputValue, eachcharacterref, wordRefs,
+    const { wordsArray, inputbox, inputValue, eachcharacterref, wordRefs,
         textMeasureRef,
         ChallengeRef,
-        challengeWidth,
-        currentWordOffset,
-        InputValueArray,
-        shiftChallengeView,
-        CheckCharacterCorrectOrNot,
-        CheckWordIsCorrectOrNot,
         handleInput,
         gameStartState, gameOver,
         slideInVariant } = useTypeRacerContext()
@@ -20,7 +14,7 @@ function Inputandchallenge() {
     return (
         <div className='relative flex flex-col h-full justify-center'>
             <div className='absolute inset-0'>
-                <div className='absolute inset-0 bg-gradient-to-r from-black via-transparent to-black pointer-events-none z-30'>
+                <div className='absolute inset-0 bg-gradient-to-r from-gray-300 dark:from-black via-transparent to-gray-300 dark:to-black pointer-events-none z-30'>
                 </div>
             </div>
 
@@ -66,8 +60,7 @@ function Inputandchallenge() {
                         placeholder={`${gameStartState ? "Type Here" : gameOver ? "Game Over" : ""}`}
                         value={inputValue}
                         className={`w-full
-                        h-full placeholder:text-gray-500 bg-black focus:outline-0 outline-0
-                        before:content-["hello"] before:absolute
+                        h-full placeholder:text-gray-500 dark:placeholder:text-gray-400 bg-gray-300 dark:bg-black focus:outline-0 outline-0
                         pl-[50%]
                         `}
                     />
