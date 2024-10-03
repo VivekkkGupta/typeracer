@@ -26,7 +26,7 @@ export const TypeRacerContextProvider = ({ children }) => {
 
     //Navbar States
     const [isSettingsOpen, setIsSettingsOpen] = useState(false);
-    const [gameModeWordsOrSentences, setGameModeWordsOrSentences] = useState('sentences');
+    const [gameModeWordsOrSentences, setGameModeWordsOrSentences] = useState('words');
     const [gameTextSize, setGameTextSize] = useState('large');
 
     //Timer for game

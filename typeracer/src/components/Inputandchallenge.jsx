@@ -14,7 +14,7 @@ function Inputandchallenge() {
     return (
         <div className='relative flex flex-col h-full justify-center'>
             <div className='absolute inset-0'>
-                <div className='absolute inset-0 bg-gradient-to-r from-gray-300 dark:from-black via-transparent dark:via-transparent to-gray-300 dark:to-black pointer-events-none '>
+                <div className='z-[999] absolute inset-0 bg-gradient-to-r from-gray-300 dark:from-black via-transparent dark:via-transparent to-gray-300 dark:to-black pointer-events-none '>
                 </div>
             </div>
 
