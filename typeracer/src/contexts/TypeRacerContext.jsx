@@ -31,6 +31,8 @@ export const TypeRacerContextProvider = ({ children }) => {
 
     //Timer for game
     const [timer, setTimer] = useState(5);
+    // Track whether the game has started before or not
+    const hasGameStartedBefore = useRef(false);
     const [gameOver, setGameOver] = useState(true);
     const [gameStarted, setGameStarted] = useState(false);
     const [gameStartState, setGameStartState] = useState(true);
