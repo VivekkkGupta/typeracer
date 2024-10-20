@@ -5,12 +5,12 @@ import { useThemeContext } from "../contexts/ThemeContext";
 
 function Navbar() {
 
-    const { expandInVariant, gameModeWordsOrSentences, setGameModeWordsOrSentences, gameTextSize, setGameTextSize, flashInVariant, isSettingsOpen, setIsSettingsOpen } = useTypeRacerContext();
+    const { expandInVariant, gameModeWordsOrSentences, setGameModeWordsOrSentences, gameTextSize, setGameTextSize, flashInVariant, isSettingsOpen, setIsSettingsOpen, isInfoOpen, setInfoOpen } = useTypeRacerContext();
 
     const { theme, setTheme } = useThemeContext();
 
 
-    const [isInfoOpen, setInfoOpen] = useState(false);
+
     const [isCopied, setIsCopied] = useState(false);
     const [openSettingIndex, setOpenSettingIndex] = useState(null);
 
@@ -42,7 +42,7 @@ function Navbar() {
             <div className="absolute top-5 right-2 p-5 flex flex-col gap-2 text-3xl rounded-xl z-[999999]">
 
 
-                <div className={`${isSettingsOpen ? "opacity-100 top-5 z-[99999]" : "opacity-0 top-0 z-[-9]"} absolute text-xl bg-gray-200 dark:bg-slate-900 rounded-lg left-[-350%] text-black dark:text-white flex flex-col transition-all duration-500`}>
+                <div className={`${isSettingsOpen ? "opacity-100 top-5 z-[99999]" : "opacity-0 top-[-100%] z-[-9] "} absolute text-xl bg-gray-200 dark:bg-slate-900 rounded-lg left-[-350%] text-black dark:text-white flex flex-col transition-all duration-300 ease-out`}>
 
 
                     {['Theme', 'Word Mode', 'Language', 'Text Size'].map((item, index) => (
@@ -231,12 +231,15 @@ function Navbar() {
                         </div>
                     ))}
                 </div >
-                <div className={`${isInfoOpen ? "opacity-100 top-5" : "opacity-0 top-0"} z-[9999] absolute text-lg bg-gray-200 dark:bg-slate-900 rounded-lg left-[-350%] text-black dark:text-white flex flex-col transition-all duration-500`}>
-                    <div className='hover:bg-blue-300 dark:hover:bg-blue-900 hover:rounded-lg p-4 w-[15vw] cursor-pointer flex justify-between transition-all duration-500'>
+                <div className={`${isInfoOpen ? "opacity-100 top-5" : "opacity-0 top-[-100%]"} z-[9999] absolute text-lg bg-gray-200 dark:bg-slate-900 rounded-lg left-[-350%] text-black dark:text-white flex flex-col transition-all duration-300 ease-out`}>
+                    <div className='hover:bg-blue-300 dark:hover:bg-blue-900 hover:rounded-lg p-4 w-[18vw] cursor-pointer flex justify-between transition-all duration-500 flex-col'>
                         This is a Modern Typing test Website to improve your typing skills.
                         <br />
                         <br />
                         Made with ❤️ by Vivek
+                        <a href='https://developervivek.com'>
+                            &copy;developervivek.com
+                        </a>
                     </div>
                 </div>
 

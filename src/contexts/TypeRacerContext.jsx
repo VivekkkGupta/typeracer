@@ -26,6 +26,7 @@ export const TypeRacerContextProvider = ({ children }) => {
 
     //Navbar States
     const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+    const [isInfoOpen, setInfoOpen] = useState(false);
     const [gameModeWordsOrSentences, setGameModeWordsOrSentences] = useState('words');
     const [gameTextSize, setGameTextSize] = useState('large');
 
@@ -296,6 +297,7 @@ export const TypeRacerContextProvider = ({ children }) => {
     };
     const handleNav = () => {
         setIsSettingsOpen(false)
+        setInfoOpen(false)
         console.log("ckck")
     }
 
@@ -369,7 +371,7 @@ export const TypeRacerContextProvider = ({ children }) => {
         calculateWPM, calculateCharacterAccuracy, calculateWordAccuracy, correctWordsCount, wrongWordsCount, wrongCharactersCount, elapsedTime, setElapsedTime,
         slideInVariant, rotateVariant, flashInVariant, expandInVariant,
         isSettingsOpen, setIsSettingsOpen, gameModeWordsOrSentences, setGameModeWordsOrSentences, gameTextSize, setGameTextSize,
-        handleNav
+        handleNav, isInfoOpen, setInfoOpen
     };
 
     return (

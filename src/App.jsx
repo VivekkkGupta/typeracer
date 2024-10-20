@@ -9,7 +9,7 @@ import { useThemeContext } from "./contexts/ThemeContext";
 import { motion, AnimatePresence } from 'framer-motion';
 
 const App = () => {
-  const { isTyping, setIsTyping, testOver, setTestOver, setTimer, gameOver, gameTextSize, gameRestart, gameModeWordsOrSentences, handleNav, isSettingsOpen, setIsSettingsOpen, gameStartState } = useTypeRacerContext();
+  const { isTyping, setIsTyping, testOver, setTestOver, setTimer, gameOver, gameTextSize, gameRestart, gameModeWordsOrSentences, handleNav, isSettingsOpen, setIsSettingsOpen, gameStartState, isInfoOpen, setInfoOpen } = useTypeRacerContext();
 
   const { theme } = useThemeContext()
 
@@ -41,11 +41,12 @@ const App = () => {
      
     overflow-hidden font-Roboto flex flex-col justify-between`}>
 
-      {isSettingsOpen &&
+      {(isSettingsOpen || isInfoOpen) &&
         <div className="absolute inset-0 bg-black opacity-[50%] z-[99999] backdrop-blur-xl transition-all duration-500"
           onClick={handleNav}
         >
-        </div>}
+        </div>
+      }
 
       <Navbar />
 
